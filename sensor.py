@@ -18,8 +18,8 @@ CONF_LOCATION = "location"
 # CONF_AQI_CITY = "aqi_city"
 CONF_APPKEY = "appkey"
 
-life_index_list = {"comf_txt": None, "drsg_txt": None, "flu_txt": None,
-                   "sport_txt": None, "trav_txt": None, "uv_txt": None, "cw_txt": None}
+#life_index_list = {"comf_txt": None, "drsg_txt": None, "flu_txt": None,
+#                  "sport_txt": None, "trav_txt": None, "uv_txt": None, "cw_txt": None}
 
 OPTIONS = dict(fl=["now.feelsLike", "实况体感温度", "mdi:temperature-celsius", "℃"],
                tmp=["now.temp", "实况室外温度", "mdi:thermometer", "℃"],
@@ -109,7 +109,7 @@ class HeWeatherSensor(Entity):
     def unit_of_measurement(self):
         return self._unit_of_measurement
 
-    @property
+'''    @property
     def device_state_attributes(self):
         global ATTRIBUTION
 
@@ -134,7 +134,7 @@ class HeWeatherSensor(Entity):
             ATTR_UPDATE_TIME: self._updatetime,
             ATTRIBUTION_SUGGESTION: ATTRIBUTION,
         }
-
+'''
     def update(self):
         self._data.update()
         self._updatetime = self._data.updatetime
@@ -169,20 +169,20 @@ class HeWeatherSensor(Entity):
             self._state = self._data.pm10
         elif self._type == "pm25":
             self._state = self._data.pm25
-        elif self._type == "cw":
-            self._state = self._data.cw
-        elif self._type == "comf":
-            self._state = self._data.comf
-        elif self._type == "drsg":
-            self._state = self._data.drsg
-        elif self._type == "flu":
-            self._state = self._data.flu
-        elif self._type == "sport":
-            self._state = self._data.sport
-        elif self._type == "trav":
-            self._state = self._data.trav
-        elif self._type == "uv":
-            self._state = self._data.uv
+#        elif self._type == "cw":
+#           self._state = self._data.cw
+#        elif self._type == "comf":
+#            self._state = self._data.comf
+#        elif self._type == "drsg":
+#            self._state = self._data.drsg
+#        elif self._type == "flu":
+#            self._state = self._data.flu
+#        elif self._type == "sport":
+#            self._state = self._data.sport
+#       elif self._type == "trav":
+#            self._state = self._data.trav
+ #       elif self._type == "uv":
+ #           self._state = self._data.uv
         elif self._type == "tmp_max":
             self._state = self._data.tmp_max
         elif self._type == "tmp_min":
@@ -215,13 +215,13 @@ class WeatherData(object):
         self._pm10 = None
         self._pm25 = None
         self._updatetime = None
-        self._comf = None
-        self._cw = None
-        self._drsg = None
-        self._flu = None
-        self._sport = None
-        self._uv = None
-        self._trav = None
+#        self._comf = None
+#        self._cw = None
+#        self._drsg = None
+#        self._flu = None
+#        self._sport = None
+#        self._uv = None
+#        self._trav = None
         self._tmp_max = None
         self._tmp_min = None
         self._pop = None
@@ -286,7 +286,7 @@ class WeatherData(object):
     def pm25(self):
         return self._pm25
 
-    @property
+'''    @property
     def comf(self):
         return self._comf
 
@@ -313,7 +313,7 @@ class WeatherData(object):
     @property
     def trav(self):
         return self._trav
-
+ '''
     @property
     def tmp_max(self):
         return self._tmp_max
@@ -406,7 +406,7 @@ class WeatherData(object):
             else:
                 self._main = con_air.get("HeWeather6")[0].get("air_now_city").get("main")
 
-            self._comf = con_life_index.get("HeWeather6")[0].get("lifestyle")[0].get("brf")
+'''            self._comf = con_life_index.get("HeWeather6")[0].get("lifestyle")[0].get("brf")
             self._drsg = con_life_index.get("HeWeather6")[0].get("lifestyle")[1].get("brf")
             self._flu = con_life_index.get("HeWeather6")[0].get("lifestyle")[2].get("brf")
             self._sport = con_life_index.get("HeWeather6")[0].get("lifestyle")[3].get("brf")
@@ -416,7 +416,7 @@ class WeatherData(object):
             life = ["comf_txt", "drsg_txt", "flu_txt", "sport_txt", "trav_txt", "uv_txt", "cw_txt"]
             for i, index in enumerate(life):
                 life_index_list[index] = con_life_index["HeWeather6"][0]["lifestyle"][i]["txt"]
-
+'''
             self._tmp_max = today_weather.get("HeWeather6")[0].get("daily_forecast")[0].get("tmp_max")
             self._tmp_min = today_weather.get("HeWeather6")[0].get("daily_forecast")[0].get("tmp_min")
             self._pop = today_weather.get("HeWeather6")[0].get("daily_forecast")[0].get("pop")
