@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 TIME_BETWEEN_UPDATES = timedelta(minutes=30)
 
 CONF_OPTIONS = "options"
-CONF_CITY = "city"
+CONF_LOCATION = "location"
 # CONF_AQI_CITY = "aqi_city"
 CONF_APPKEY = "appkey"
 
@@ -54,7 +54,7 @@ ATTRIBUTION_SUGGESTION = "生活建议"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
-        vol.Required(CONF_CITY): cv.string,
+        vol.Required(CONF_LOCATION): cv.string,
         vol.Required(CONF_APPKEY): cv.string,
         vol.Required(CONF_OPTIONS, default=[]): vol.All(cv.ensure_list, [vol.In(OPTIONS)]),
     }
@@ -63,10 +63,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     _LOGGER.info("Setup platform sensor.HeWeather")
-    city = config.get(CONF_CITY)
+    location = config.get(CONF_LOCATION)
     appkey = config.get(CONF_APPKEY)
     # aqi_city = config.get(CONF_AQI_CITY)
-    data = WeatherData(city, appkey)
+    data = WeatherData(location, appkey)
 
     dev = []
     for option in config[CONF_OPTIONS]:
@@ -192,12 +192,12 @@ class HeWeatherSensor(Entity):
 
 
 class WeatherData(object):
-    def __init__(self, city, appkey):
+    def __init__(self, location, appkey):
         self._url = "https://devapi.qweather.com/v7/weather/now?"
         self._air_url = "https://devapi.qweather.com/v7/air/now?"
         self._life_index_url = "https://devapi.qweather.com/v7/indices/1d?"
         self._long_weather_forcasting_url = "https://devapi.qweather.com/v7/weather/3d?"
-        self._params = {"location": city, "key": appkey}
+        self._params = {"location": location, "key": appkey}
         # self._aqi_params = {"location": aqi_city, "key": appkey}
         self._fl = None
         self._tmp = None
